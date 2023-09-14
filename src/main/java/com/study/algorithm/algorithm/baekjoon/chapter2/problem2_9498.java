@@ -15,9 +15,8 @@ public class problem2_9498 {
    *   첫째 줄에 시험 점수가 주어진다. 시험 점수는 0보다 크거나 같고, 100보다 작거나 같은 정수이다.
    *
    *   @Output
-   *
-   *
    *   시험 성적을 출력한다.
+       gjgjgjgj...
    */
   public static void main(String[] args) {
 
