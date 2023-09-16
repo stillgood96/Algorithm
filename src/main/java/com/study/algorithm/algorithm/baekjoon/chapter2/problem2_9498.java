@@ -46,6 +46,8 @@ public class problem2_9498 {
 
     }
 
+    System.out.println("으허허허");
+
 
 
 
