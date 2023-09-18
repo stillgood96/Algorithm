@@ -48,6 +48,7 @@ public class problem2_9498 {
 
     System.out.println("으허허허");
     System.out.println("정신을 빠짝차리자");
+    System.out.println("정신을 빠짝차리자2..");
 
 
 
