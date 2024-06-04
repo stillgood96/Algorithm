@@ -5,10 +5,18 @@ public class LinkedListImplements implements LinkedList {
   Node item;
   Node tail;
   int size = 0;
+
+  /**
+   * LinkedList 배열의 인덱스 객체
+   * data: 인덱스에 들어갈 데이터
+   * link: 해당 인덱스 다음과의 연결고리
+   * before: 해당 인덱스 이전과의 연결고리
+   */
   private class Node {
     Object data;
     Node link;
     Node before;
+
     public Node(Object data) {
       this.data = data;
       this.link = null;
@@ -23,6 +31,7 @@ public class LinkedListImplements implements LinkedList {
     if(head == null) {
       head = addItem;
       item = addItem;
+      tail = item;
     }else {
       item.link = addItem;
       item = addItem;
@@ -56,6 +65,7 @@ public class LinkedListImplements implements LinkedList {
       addItem.before = itemToAdd.before;
       itemToAdd.before.link = addItem;
       itemToAdd.before = addItem;
+
     }
   }
 
