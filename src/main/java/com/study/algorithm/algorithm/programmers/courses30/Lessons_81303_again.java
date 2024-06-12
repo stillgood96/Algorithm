@@ -10,7 +10,7 @@ public class Lessons_81303_again {
     int n = 8;
     int k = 2;
 
-    String solution = solution(n, k, cmd2);
+    String solution = solution(n, k, cmd);
 
     System.out.println(solution);
   }
@@ -19,62 +19,58 @@ public class Lessons_81303_again {
 
 
     LinkedListImplements originList = new LinkedListImplements();
-    LinkedListImplements changingList = new LinkedListImplements();
     LinkedListImplements deleteList = new LinkedListImplements();
 
     for(int i = 0; i < n; i++) {
       originList.add(i);
-      changingList.add(i);
     }
+    originList.setItem(originList.get(k));
 
-    changingList.setItem(originList.get(k));
-
-    int point = k;
     for(int i = 0; i < cmd.length; i++) {
       String[] command = cmd[i].split(" ");
-      if(command[0].equals("U")) {
 
+      if(command[0].equals("U")) {
         originList.moveUp(Integer.parseInt(command[1]));
 
       }else if(command[0].equals("D")) {
-
         originList.moveDown(Integer.parseInt(command[1]));
 
       }else if(command[0].equals("C")) {
-        LinkedListImplements.Node item = changingList.item;
-        changingList.remove();
-        deleteList.add(item);
+        deleteList.add(originList.pop());
 
       }else if(command[0].equals("Z")) {
-
+        LinkedListImplements.Node recoveryNode = deleteList.popTail();
+        originList.revert(recoveryNode);
       }
+
+      originList.printAll();
+
     }
 
-    originList.printAll();
-
-    return "";
+    return originList.answer();
   }
 
   public static class LinkedListImplements {
     Node head;
     Node item;
     Node tail;
-    int size = 0;
 
     private class Node {
-      Object data;
+      int data;
       Node link;
       Node before;
 
-      public Node(Object data) {
+      boolean removed;
+
+      public Node(int data) {
         this.data = data;
         this.link = null;
         this.before = item;
-        size++;
+        this.removed = false;
       }
     }
 
-    public void add(Object data) {
+    public void add(int data) {
       Node addItem = new Node(data);
       if(head == null) {
         head = addItem;
@@ -86,74 +82,22 @@ public class Lessons_81303_again {
         tail = item;
       }
     }
-
-    public void add(int idx, Object data) {
-      if(idx > size - 1) {
-        return;
-      }
-
-      Node addItem = new Node(data);
-      item = addItem;
-
-      Node itemToAdd = head;
-      for(int i = 0; i < idx; i++) {
-        if( itemToAdd.link != null) {
-          itemToAdd = itemToAdd.link;
-        }
-      }
-
-      if(itemToAdd == head) {
-        addItem.link = itemToAdd;
-        addItem.before = null;
-        itemToAdd.before = addItem;
-        head = addItem;
-
-      }else {
-        addItem.link = itemToAdd;
-        addItem.before = itemToAdd.before;
-        itemToAdd.before.link = addItem;
-        itemToAdd.before = addItem;
-      }
+    public int pop() {
+      Node popedItem = item;
+      popedItem.removed = true;
+      item = popedItem.link != null ? popedItem.link : item.before;
+      return popedItem.data;
     }
 
-    public void pop() {
-      tail = item.before;
+    public Node popTail() {
+      Node popedTail = tail;
+      popedTail.removed = true;
+      tail = tail.before;
       tail.link = null;
-      item = item.before;
-      size--;
-    }
-
-    public void pop(long idx) {
-      if(idx > size - 1) {
-        return;
-      }
-
-      Node itemToPop = head;
-      for(int i = 0; i < idx; i++) {
-        if( itemToPop.link != null) {
-          itemToPop = itemToPop.link;
-        }
-      }
-
-      if(itemToPop == head) {
-        head = itemToPop.link;
-        head.before = null;
-      }else if(itemToPop == tail) {
-        tail = itemToPop.before;
-        tail.link = null;
-      }else {
-        itemToPop.before.link = itemToPop.link;
-        itemToPop.link.before = itemToPop.before;
-      }
-
-      size--;
+      return popedTail;
     }
 
     public Node get(long idx) {
-
-      if(idx > size - 1) {
-        return null;
-      }
 
       Node result = head;
       for(int i = 0; i < idx; i++) {
@@ -165,18 +109,44 @@ public class Lessons_81303_again {
       return result;
     }
 
-    public void remove() {
-      if ( item == head ) {
-        head = item.link;
-        item = item.link;
-      } else if ( item == tail ) {
-        tail = item.before;
-        item = item.before;
-        item.link = null;
-      } else {
-        item.before.link = item.link;
-        item.link.before = item.before;
-        item = item.before;
+    public void moveUp(int count) {
+      for(int i = 1; i <= count; i++) {
+        if(item.before != null) {
+          item = item.before;
+          while(item != null && item.removed) {
+            item = item.before;
+          }
+        }
+      }
+    }
+
+    public void moveDown(int count) {
+
+      for(int i = 1; i <= count; i++) {
+        if(item.link != null) {
+          item = item.link;
+          while(item != null && item.removed) {
+            item = item.link;
+          }
+        }
+      }
+    }
+
+    public void setItem(Node item) {
+      this.item = item;
+    }
+
+    public void revert(Node revertItem) {
+      Node findNode = head;
+
+      while(findNode != null) {
+        if(findNode.data == revertItem.data ) {
+
+          findNode.removed = false;
+          break;
+        }else {
+          findNode = findNode.link;
+        }
       }
     }
 
@@ -184,33 +154,29 @@ public class Lessons_81303_again {
       Node result = head;
       System.out.println("===============printAll Start====================");
       while(result != null) {
-        System.out.println(result.data);
+        if(!result.removed) {
+          System.out.println(result.data);
+        }
         result = result.link;
       }
       System.out.println("===============printAll End====================");
     }
 
-    public void setItem(Node item) {
-      this.item = item;
-    }
+    public String answer() {
+      StringBuffer sb = new StringBuffer();
 
-    public void moveUp(int count) {
-      for(int i = 1; i <= count; i++) {
-        if(this.item.before != null) {
-          this.item = this.item.before;
+      Node result = head;
+      while(result != null) {
+        if(!result.removed) {
+          sb.append("O");
+        }else {
+          sb.append("X");
         }
+        result = result.link;
       }
+
+      return sb.toString();
     }
-
-    public void moveDown(int count) {
-      for(int i = 1; i <= count; i++) {
-        if(this.item.link != null) {
-          this.item = this.item.link;
-        }
-      }
-    }
-
-
   }
 
 }
