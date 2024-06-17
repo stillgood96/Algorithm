@@ -53,13 +53,13 @@ public class Lessons_81303 {
 
       }else if( command[0].equals("Z") ) {
 //
-//        Integer pop = deletedList.get(deletedList.size() -1);
-//        deletedList.remove(deletedList.size() - 1);
-//        try {
-//          compareList.add(pop, pop);
-//        }catch ( IndexOutOfBoundsException e ) {
-//          compareList.add(pop);
-//        }
+        Integer pop = deletedList.get(deletedList.size() -1);
+        deletedList.remove(deletedList.size() - 1);
+        try {
+          compareList.add(pop, pop);
+        }catch ( IndexOutOfBoundsException e ) {
+          compareList.add(pop);
+        }
       }
     }
 
