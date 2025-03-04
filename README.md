@@ -1,12 +1,10 @@
 # FormBuilder
----
 
 다양한 사용자 입력 폼을 생성하고 관리할 수 있는 도구로  
 관리자 페이지에서 사용자 페이지에 제공할 입력 폼을 생성 및 관리기능을 지원한다
 
 
 # History  
----
 24-11-11. 초기 UI 작업 및 타입(Text, Number, Textarea, Radio, Checkbox, Selectbox, Date) 추가  
 25-02-18. 에러메시지 추가  
 25-02-19. 미리보기(카잔) 추가  
